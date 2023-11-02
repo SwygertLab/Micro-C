@@ -31,7 +31,7 @@ this file is also assumed to be in the working directory.
 
 The MicC_pipeline.sh pipeline also assumes that the associated python scripts are in the working directory. 
 These are part of this repository and are:
-- filter_pairs.py
+- filter_orientation_heading.py
 - distance_decay.py
 
 distance_decay.py is called inside the pipeline and will output a graph containing the average short contacts of the different orientations.
