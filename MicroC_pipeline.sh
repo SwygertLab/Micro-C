@@ -14,17 +14,20 @@ conda activate MicC # you will need an active conda environment with the bowtie2
 
 fastq1=$1 
 fastq2=$2
+
+gunzip $fastq1 #if your fastq files are already unzipped feel free to # these out
+gunzip $fastq2
+
 file_path_to_genome="/pl/active/swygertlab/jasonher/Saccer3/Saccer3" #you need to change this to the location of your genome data
 file_path_to_chrom_sizes="pl/active/swygertlab/jasonher/micro-c/sacCer3.chrSizes" # you need to change this to the location of your chromomsomes' sizes file
 distance_graphed=201 #change to distance you want to get graphed
-file_names=$3 # include how you want the files to be named 
+sample3=$3 # include how you want the files to be named 
 
 sample1=$(echo ${fastq1} | sed 's/\..*$//')
 sample2=$(echo ${fastq2} | sed 's/\..*$//')
-sample3=${file_names}
-#sample3=$sample1$sample2
-#bzip2 -d ${fastq1}
-#bzip2 -d ${fastq2}
+
+bzip2 -d ${fastq1}
+bzip2 -d ${fastq2}
 
 #bowtie2 will align the sample reads to the reference genome
 bowtie2 --very-sensitive -p 16 --reorder -x $file_path_to_genome -1 ${sample1}.fastq -2 ${sample2}.fastq -S ${sample3}.sam
