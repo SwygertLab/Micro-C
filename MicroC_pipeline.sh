@@ -19,7 +19,7 @@ gunzip $fastq1 #if your fastq files are already unzipped feel free to # these ou
 gunzip $fastq2
 
 file_path_to_genome="/pl/active/swygertlab/jasonher/Saccer3/Saccer3" #you need to change this to the location of your genome data
-file_path_to_chrom_sizes="pl/active/swygertlab/jasonher/micro-c/sacCer3.chrSizes" # you need to change this to the location of your chromomsomes' sizes file
+file_path_to_chrom_sizes="/pl/active/swygertlab/jasonher/micro-c/sacCer3.chrSizes" # you need to change this to the location of your chromomsomes' sizes file
 distance_graphed=201 #change to distance you want to get graphed
 sample3=$3 # include how you want the files to be named 
 
