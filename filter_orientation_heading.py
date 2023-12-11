@@ -17,7 +17,6 @@ log_file = open(log_file_name, 'x')
 
 def read_file(pairs_file2):
     pair_obj_ls = []
-    dup = 0
     unk_chr = 0
     IN_reads_count = 0
     OUT_reads_count = 0
@@ -43,52 +42,48 @@ def read_file(pairs_file2):
         pairs_arg_list.append(temp[0])
         pair_obj = Pair(pairs_arg_list[0], pairs_arg_list[1], pairs_arg_list[2], pairs_arg_list[3], pairs_arg_list[4],
                         pairs_arg_list[5], pairs_arg_list[6], pairs_arg_list[7])
-        if not pair_obj_ls.__contains__(pair_obj):
-            pair_obj_ls.append(pair_obj)
-            if pair_obj.if_unk_chr():
-                filtered_reads = filtered_reads + 1
-                unk_chr = unk_chr + 1
-            elif pair_obj.if_rDNA():
-                filtered_reads = filtered_reads + 1
-            elif pair_obj.determine_orientation() == 'SAME':
-                noIN_pairs_file.write(pairs_arg_list[0] + '\t' + pairs_arg_list[1] + '\t' + pairs_arg_list[2] + '\t' +
-                                      pairs_arg_list[3] + '\t' + pairs_arg_list[4] + '\t' + pairs_arg_list[5] + '\t' +
-                                      pairs_arg_list[6] + '\t' + pairs_arg_list[7] + '\n')
-                noIN_reads_count = noIN_reads_count + 1
-                SAME_reads_file.write(pairs_arg_list[0] + '\t' + pairs_arg_list[1] + '\t' + pairs_arg_list[2] + '\t' +
-                                      pairs_arg_list[3] + '\t' + pairs_arg_list[4] + '\t' + pairs_arg_list[5] + '\t' +
-                                      pairs_arg_list[6] + '\t' + pairs_arg_list[7] + '\n')
-                SAME_reads_count = SAME_reads_count + 1
-            elif pair_obj.determine_orientation() == 'OUT':
-                noIN_pairs_file.write(pairs_arg_list[0] + '\t' + pairs_arg_list[1] + '\t' + pairs_arg_list[2] + '\t' +
-                                      pairs_arg_list[3] + '\t' + pairs_arg_list[4] + '\t' + pairs_arg_list[5] + '\t' +
-                                      pairs_arg_list[6] + '\t' + pairs_arg_list[7] + '\n')
-                noIN_reads_count = noIN_reads_count + 1
-                OUT_reads_file.write(pairs_arg_list[0] + '\t' + pairs_arg_list[1] + '\t' + pairs_arg_list[2] + '\t' +
-                                     pairs_arg_list[3] + '\t' + pairs_arg_list[4] + '\t' + pairs_arg_list[5] + '\t' +
-                                     pairs_arg_list[6] + '\t' + pairs_arg_list[7] + '\n')
-                OUT_reads_count = OUT_reads_count + 1
-            elif pair_obj.determine_orientation() == 'IN':
-                IN_reads_file.write(pairs_arg_list[0] + '\t' + pairs_arg_list[1] + '\t' + pairs_arg_list[2] + '\t' +
-                                    pairs_arg_list[3] + '\t' + pairs_arg_list[4] + '\t' + pairs_arg_list[5] + '\t' +
-                                    pairs_arg_list[6] + '\t' + pairs_arg_list[7] + '\n')
-                IN_reads_count = IN_reads_count + 1
-            included_reads = included_reads + 1
-        else:
-            dup = dup + 1
+        if pair_obj.if_unk_chr():
             filtered_reads = filtered_reads + 1
-        # Writing out to log file filtering info.
-        log_file.write("The number of duplicates filtered out is " + dup + ".")
-        log_file.write("The number of reads filtered out to unknown chromosomes is  " + unk_chr + ".")
-        log_file.write("The total number of IN reads is " + IN_reads_count + ".")
-        log_file.write("The total number of OUT reads is " + OUT_reads_count + ".")
-        log_file.write("The total number of SAME reads is " + SAME_reads_count + ".")
-        log_file.write("The total number of noIN reads is " + noIN_reads_count + ".")
-        log_file.write("The total number of filtered reads is" + filtered_reads + ".")
-        log_file.write("The total number of included reads is " + included_reads + ".")
-        total_reads = filtered_reads + included_reads
-        log_file.write("The total number of filtered and included reads is " + total_reads + ".")
+            unk_chr = unk_chr + 1
+        elif pair_obj.if_rDNA():
+            filtered_reads = filtered_reads + 1
+        elif pair_obj.determine_orientation() == 'SAME':
+            noIN_pairs_file.write(pairs_arg_list[0] + '\t' + pairs_arg_list[1] + '\t' + pairs_arg_list[2] + '\t' +
+                                  pairs_arg_list[3] + '\t' + pairs_arg_list[4] + '\t' + pairs_arg_list[5] + '\t' +
+                                  pairs_arg_list[6] + '\t' + pairs_arg_list[7] + '\n')
+            noIN_reads_count = noIN_reads_count + 1
+            SAME_reads_file.write(pairs_arg_list[0] + '\t' + pairs_arg_list[1] + '\t' + pairs_arg_list[2] + '\t' +
+                                  pairs_arg_list[3] + '\t' + pairs_arg_list[4] + '\t' + pairs_arg_list[5] + '\t' +
+                                  pairs_arg_list[6] + '\t' + pairs_arg_list[7] + '\n')
+            SAME_reads_count = SAME_reads_count + 1
+        elif pair_obj.determine_orientation() == 'OUT':
+            noIN_pairs_file.write(pairs_arg_list[0] + '\t' + pairs_arg_list[1] + '\t' + pairs_arg_list[2] + '\t' +
+                                  pairs_arg_list[3] + '\t' + pairs_arg_list[4] + '\t' + pairs_arg_list[5] + '\t' +
+                                  pairs_arg_list[6] + '\t' + pairs_arg_list[7] + '\n')
+            noIN_reads_count = noIN_reads_count + 1
+            OUT_reads_file.write(pairs_arg_list[0] + '\t' + pairs_arg_list[1] + '\t' + pairs_arg_list[2] + '\t' +
+                                 pairs_arg_list[3] + '\t' + pairs_arg_list[4] + '\t' + pairs_arg_list[5] + '\t' +
+                                 pairs_arg_list[6] + '\t' + pairs_arg_list[7] + '\n')
+            OUT_reads_count = OUT_reads_count + 1
+        elif pair_obj.determine_orientation() == 'IN':
+            IN_reads_file.write(pairs_arg_list[0] + '\t' + pairs_arg_list[1] + '\t' + pairs_arg_list[2] + '\t' +
+                                pairs_arg_list[3] + '\t' + pairs_arg_list[4] + '\t' + pairs_arg_list[5] + '\t' +
+                                pairs_arg_list[6] + '\t' + pairs_arg_list[7] + '\n')
+            IN_reads_count = IN_reads_count + 1
+        else:
+            filtered_reads = filtered_reads + 1
+        included_reads = included_reads + 1    
         pairs_line = read_pairs_file.readline()
+    # Writing out to log file filtering info.
+    log_file.write("The number of reads filtered out to unknown chromosomes is  " + str(unk_chr) + ".")
+    log_file.write("The total number of IN reads is " + str(IN_reads_count) + ".")
+    log_file.write("The total number of OUT reads is " + str(OUT_reads_count) + ".")
+    log_file.write("The total number of SAME reads is " + str(SAME_reads_count) + ".")
+    log_file.write("The total number of noIN reads is " + str(noIN_reads_count) + ".")
+    log_file.write("The total number of filtered reads is" + str(filtered_reads) + ".")
+    log_file.write("The total number of included reads is " + str(included_reads) + ".")
+    total_reads = int(filtered_reads) + int(included_reads)
+    log_file.write("The total number of filtered and included reads is " + str(total_reads) + ".")
 
 
 class Pair:
@@ -108,7 +103,7 @@ class Pair:
 
     def if_rDNA(self):
         if self.chrom1 == 'chrXII' or self.chrom_mate == 'chrXII':
-            if 451573 < self.pos1 < 470000 or 451573 < self.pos_mate < 470000:
+            if 451573 < int(self.pos1) < 470000 or 451573 < int(self.pos_mate) < 470000:
                 return True
 
     def determine_orientation(self):
