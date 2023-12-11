@@ -56,7 +56,7 @@ python filter_orientations_heading.py ${sample_name}_output.pairs
 
 java -Xmx22g -jar juicer_tools_1.22.01.jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_IN_reads.pairs ./results/${sample_name}'_IN_reads.hic' sacCer3
 java -Xmx22g -jar juicer_tools_1.22.01.jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_OUT_reads.pairs ./results/${sample_name}'_OUT_reads.hic' sacCer3
-java -Xmx22g -jar juicer_tools_1.22.01.jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample3}_output_SAME_reads.pairs ./results/${sample_name}'_SAME_reads.hic' sacCer3
+java -Xmx22g -jar juicer_tools_1.22.01.jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_SAME_reads.pairs ./results/${sample_name}'_SAME_reads.hic' sacCer3
 java -Xmx22g -jar juicer_tools_1.22.01.jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_noIN.pairs ./results/${sample_name}'_noIN.hic' sacCer3
 
 in=$(wc -l ${sample_name}_output_IN_reads.pairs)
