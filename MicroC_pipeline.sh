@@ -18,16 +18,18 @@ mkdir ./log
 
 fastq1=$1 
 fastq2=$2
+file_path_to_genome="/pl/active/swygertlab/jasonher/Saccer3/Saccer3" #you need to change this to the location of your genome data
+file_path_to_chrom_sizes="/pl/active/swygertlab/jasonher/micro-c/sacCer3.chrSizes" # you need to change this to the location of your chromomsomes' sizes file
+
+distance_graphed=201 #change to distance you want to get graphed
+sample_name=$3 # include how you want the files to be named 
+fastq1_name=$(echo ${fastq1} | sed 's/\..*$//')
+fastq2_name=$(echo ${fastq2} | sed 's/\..*$//')
 
 gunzip $fastq1 #if your fastq files are already unzipped feel free to # these out
 gunzip $fastq2
 
-file_path_to_genome="/pl/active/swygertlab/jasonher/Saccer3/Saccer3" #you need to change this to the location of your genome data
-file_path_to_chrom_sizes="/pl/active/swygertlab/jasonher/micro-c/sacCer3.chrSizes" # you need to change this to the location of your chromomsomes' sizes file
-distance_graphed=201 #change to distance you want to get graphed
-sample_name=$1 # include how you want the files to be named 
-fastq1_name=$(echo ${fastq1} | sed 's/\..*$//')
-fastq2_name=$(echo ${fastq2} | sed 's/\..*$//')
+
 
 bowtie2 will align the sample reads to the reference genome
 bowtie2 --very-sensitive -k 1 -p $SLURM_NTASKS --reorder -x $file_path_to_genome -1 ${fastq1_name}.fastq -2 ${fastq2_name}.fastq -S ${sample_name}.sam
