@@ -10,7 +10,7 @@ distance_graphed = sys.argv[3]  # the distance you want to get graphed
 
 #in order to set graph limits change False to True and then add the 4 limit numbers
 set_limit = sys.argv[4]
-if set_limit is "True"
+if set_limit is "True":
     x_limit = [sys.argv[5], sys.argv[6]]  # example values [0, 1000]
     y_limit = [sys.argv[7], sys.argv[8]]  # example values [0, 0.025]
 
