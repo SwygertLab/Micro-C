@@ -116,28 +116,28 @@ echo -e ">>> INITIATING analyzer with command:\n\t$0 $@"
 
 samples=$(wc -l $metadata | awk '{ print $1 }')
 
-#mkdir $outputdir
-#mkdir $outputdir/pairs_files
-#mkdir $outputdir/cool_files
-#mkdir $outputdir/hic_files
-#mkdir $outputdir/distance_decay_plots
+mkdir $outputdir
+mkdir $outputdir/pairs_files
+mkdir $outputdir/cool_files
+mkdir $outputdir/hic_files
+mkdir $outputdir/distance_decay_plots
 
 fastq1=$(awk 'NR==1 { print $1 }' $metadata)
 fastq2=$(awk 'NR==1 { print $2 }' $metadata)
 sample_name=$(awk 'NR==1 { print $3 }' $metadata | sed 's/\..*$//') #this will the prefix for all the new files made
 
 #bowtie2 will align the sample reads to the reference genome
-#cmd1="bowtie2 --very-sensitive -p $pthread --reorder -x $file_path_to_genome -1 ${fastq1} -2 ${fastq2} -S ${sample_name}.sam 2> ${sample_name}.bowtie2.log"
-#echo "Completing bowtie2 alignment with reference genome, here is the command used: "
-#echo $cmd1
-#time eval $cmd1
+cmd1="bowtie2 --very-sensitive -p $pthread --reorder -x $file_path_to_genome -1 ${fastq1} -2 ${fastq2} -S ${sample_name}.sam 2> ${sample_name}.bowtie2.log"
+echo "Completing bowtie2 alignment with reference genome, here is the command used: "
+echo $cmd1
+time eval $cmd1
 
-#grep '@' ${sample_name}.sam > ${sample_name}'_'${mapq_filter}_filtered.sam
-#grep -v '@' ${sample_name}.sam | awk '{ if($5 >= '$mapq_filter') print $0;}' >> ${sample_name}'_'${mapq_filter}_filtered.sam
+grep '@' ${sample_name}.sam > ${sample_name}'_'${mapq_filter}_filtered.sam
+grep -v '@' ${sample_name}.sam | awk '{ if($5 >= '$mapq_filter') print $0;}' >> ${sample_name}'_'${mapq_filter}_filtered.sam
 
 #turning the bowtie2 .sam file output into a .bam file and using the .bam file to make a .pairs file
-#samtools view -S -b ${sample_name}'_'${mapq_filter}_filtered.sam > ${sample_name}'_'${mapq_filter}_filtered.bam
-#samtools view -h ${sample_name}'_'${mapq_filter}_filtered.bam | pairtools parse -c $file_path_to_chrom_sizes -o ${sample_name}_parsed.pairs.gz
+samtools view -S -b ${sample_name}'_'${mapq_filter}_filtered.sam > ${sample_name}'_'${mapq_filter}_filtered.bam
+samtools view -h ${sample_name}'_'${mapq_filter}_filtered.bam | pairtools parse -c $file_path_to_chrom_sizes -o ${sample_name}_parsed.pairs.gz
 
 #pairtools sort puts the reads in base pair sequential order
 #dedup removes duplicates
