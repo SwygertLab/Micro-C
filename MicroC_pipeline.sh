@@ -31,7 +31,7 @@ gunzip $fastq2
 
 
 
-bowtie2 will align the sample reads to the reference genome
+#bowtie2 will align the sample reads to the reference genome
 bowtie2 --very-sensitive -k 1 -p $SLURM_NTASKS --reorder -x $file_path_to_genome -1 ${fastq1_name}.fastq -2 ${fastq2_name}.fastq -S ${sample_name}.sam
 
 gzip ${sample1}.fastq
@@ -70,7 +70,7 @@ out_reads=$(echo ${out} | cut -d ' ' -f 1)
 same_reads=$(echo ${same} | cut -d ' ' -f 1)
 noIN_reads=$(echo ${noIN} | cut -d ' ' -f 1)
 sum=$((${in_reads}+${out_reads}+${same_reads}))
-python distance_decay.py script generates short distance decay plots from 0 to 2000 bp
+#python distance_decay.py script generates short distance decay plots from 0 to 2000 bp
 python distance_decay.py ${sample_name}_output_IN_reads.pairs ${in_reads} ${sum} $distance_graphed "False"
 python distance_decay.py ${sample_name}_output_OUT_reads.pairs ${out_reads} ${sum} $distance_graphed "False"
 python distance_decay.py ${sample_name}_output_SAME_reads.pairs ${same_reads} ${sum} $distance_graphed "False"
