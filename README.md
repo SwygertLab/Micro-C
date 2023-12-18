@@ -112,8 +112,13 @@ sbatch ../02_scripts/MicroC_V2.sh metadata.txt
 ## Versions of packages used at time of Writing this
 
 You can download the packages using these installation commands:
+
 conda install -c bioconda bowtie2
+
 conda install python=3.8
+
 conda install -c conda-forge matplotlib-base
+
 conda install -c bioconda cooltools
+
 conda install -c conda-forge -c bioconda pairtools=0.3.0
