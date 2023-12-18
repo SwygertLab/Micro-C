@@ -20,28 +20,27 @@ fastq1=$1
 fastq2=$2
 file_path_to_genome="/pl/active/swygertlab/jasonher/Saccer3/Saccer3" #you need to change this to the location of your genome data
 file_path_to_chrom_sizes="/pl/active/swygertlab/jasonher/micro-c/sacCer3.chrSizes" # you need to change this to the location of your chromomsomes' sizes file
-
+file_path_to_juicer_jar="/pl/active/swygertlab/jasonher/juicer_jar/juicer_tools_1.22.01.jar"
 distance_graphed=201 #change to distance you want to get graphed
 sample_name=$3 # include how you want the files to be named 
+mapq_filter=6
+
 fastq1_name=$(echo ${fastq1} | sed 's/\..*$//')
 fastq2_name=$(echo ${fastq2} | sed 's/\..*$//')
-
-gunzip $fastq1 #if your fastq files are already unzipped feel free to # these out
-gunzip $fastq2
-
-
 
 #bowtie2 will align the sample reads to the reference genome
 bowtie2 --very-sensitive -k 1 -p $SLURM_NTASKS --reorder -x $file_path_to_genome -1 ${fastq1_name}.fastq -2 ${fastq2_name}.fastq -S ${sample_name}.sam
 
-gzip ${sample1}.fastq
-gzip ${sample2}.fastq
+#these 2 lines are to create a new sam file with only reads above a certain mapq score threshold
+grep '@' ${sample_name}.sam > ${sample_name}'_'${mapq_filter}_filtered.sam
+grep -v '@' ${sample_name}.sam | awk '{ if($5 >= '$mapq_filter') print $0;}' >> ${sample_name}'_'${mapq_filter}_filtered.sam
+
 mv ${fastq1} ./data/
 mv ${fastq2} ./data/
 
-turning the bowtie2 .sam file output into a .bam file and using the .bam file to make a .pairs file
-samtools view -S -b ${sample_name}.sam > ${sample_name}.bam
-samtools view -h ${sample_name}.bam | pairtools parse -c $file_path_to_chrom_sizes -o ${sample_name}_parsed.pairs.gz
+#turning the bowtie2 .sam file output into a .bam file and using the .bam file to make a .pairs file
+samtools view -S -b ${sample_name}'_'${mapq_filter}_filtered.sam > ${sample_name}'_'${mapq_filter}_filtered.bam
+samtools view -h ${sample_name}'_'${mapq_filter}_filtered.bam | pairtools parse -c $file_path_to_chrom_sizes -o ${sample_name}_parsed.pairs.gz
 
 #pairtools sort puts the reads in base pair sequential order
 #dedup removes duplicates
@@ -56,10 +55,10 @@ pairtools split --output-pairs ${sample_name}_output.pairs.gz ${sample_name}_fil
 gunzip ${sample_name}_output.pairs.gz
 python filter_orientations_heading.py ${sample_name}_output.pairs
 
-java -Xmx22g -jar juicer_tools_1.22.01.jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_IN_reads.pairs ./results/${sample_name}'_IN_reads.hic' sacCer3
-java -Xmx22g -jar juicer_tools_1.22.01.jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_OUT_reads.pairs ./results/${sample_name}'_OUT_reads.hic' sacCer3
-java -Xmx22g -jar juicer_tools_1.22.01.jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_SAME_reads.pairs ./results/${sample_name}'_SAME_reads.hic' sacCer3
-java -Xmx22g -jar juicer_tools_1.22.01.jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_noIN.pairs ./results/${sample_name}'_noIN.hic' sacCer3
+java -Xmx22g -jar $file_path_to_juicer_jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_IN_reads.pairs ./results/${sample_name}'_IN_reads.hic' sacCer3
+java -Xmx22g -jar $file_path_to_juicer_jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_OUT_reads.pairs ./results/${sample_name}'_OUT_reads.hic' sacCer3
+java -Xmx22g -jar $file_path_to_juicer_jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_SAME_reads.pairs ./results/${sample_name}'_SAME_reads.hic' sacCer3
+java -Xmx22g -jar $file_path_to_juicer_jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_noIN.pairs ./results/${sample_name}'_noIN.hic' sacCer3
 
 in=$(wc -l ${sample_name}_output_IN_reads.pairs)
 out=$(wc -l ${sample_name}_output_OUT_reads.pairs)
@@ -95,16 +94,3 @@ cooler balance ${sample_name}_output_SAME_reads.cool
 cooler zoomify ${sample_name}_output_SAME_reads.cool
 cooler balance ${sample_name}_output_noIN.cool
 cooler zoomify ${sample_name}_output_noIN.cool
-
-#rezipping files
-bgzip ${sample_name}_output_IN_reads.pairs
-bgzip ${sample_name}_output_OUT_reads.pairs
-bgzip ${sample_name}_output_SAME_reads.pairs
-bgzip ${sample_name}_output_noIN.pairs
-gzip ${sample_name}.sam
-
-#removing unneeded files
-rm ${sample_name}_parsed.pairs.gz
-rm ${sample_name}_sorted.pairs.gz
-rm ${sample_name}_deduped.pairs.gz
-rm ${sample_name}_filtered.pairs.gz
