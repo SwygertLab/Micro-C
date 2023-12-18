@@ -2,11 +2,11 @@
 
 #SBATCH --partition=amem
 #SBATCH --job-name=micro-c
+#SBATCH --output=micro-c.%j.out
 #SBATCH --time=24:00:00
 #SBATCH --qos=mem
 #SBATCH --nodes=2
 #SBATCH --ntasks=36
-#SBATCH --output=micro-c.%j.out
 
 ################################################
 # PROGRAM:
