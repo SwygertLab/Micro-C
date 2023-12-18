@@ -80,11 +80,6 @@ module load anaconda
 ####### MODIFY THIS SECTION #############
 conda activate MicC # you will need an active conda environment with the bowtie2, samtools, pairtools, and cooler packages 
 
-#The input samples live in directory:
-inputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/01_input_data"
-
-scriptsdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/02_scripts"
-
 #Metadata file. This pulls the metadata path and file from the command line
 metadata=$1
 
@@ -96,10 +91,11 @@ file_path_to_chrom_sizes="/pl/active/swygertlab/jasonher/micro-c/sacCer3.chrSize
 
 file_path_to_juicer_jar="/pl/active/swygertlab/jasonher/juicer_jar/juicer_tools_1.22.01.jar"
 
-#This is the output_directory:
 DATE=$(date +%Y-%m-%d)
 #OR
 #DATE='2022-12-03'
+inputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/01_input_data"
+scriptsdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/02_scripts"
 outputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/03_results/"$DATE"_output"
 
 distance_graphed=201 #change to distance you want to get graphed
@@ -108,7 +104,6 @@ mapq_filter=5
 
 #Number of threads to use:
 pthread=$SLURM_NTASKS #Note - this imports the number of threads (ntasks) given in the command line
-
 ########## DONE MODIFYING ###############
 
 ########## BEGIN CODE ###############
@@ -116,6 +111,9 @@ echo -e ">>> INITIATING analyzer with command:\n\t$0 $@"
 
 samples=$(wc -l $metadata | awk '{ print $1 }')
 
+mkdir $inputdir
+mkdir $scriptsdir
+mkdir 03_results
 mkdir $outputdir
 mkdir $outputdir/pairs_files
 mkdir $outputdir/cool_files
@@ -125,6 +123,12 @@ mkdir $outputdir/distance_decay_plots
 fastq1=$(awk 'NR==1 { print $1 }' $metadata)
 fastq2=$(awk 'NR==1 { print $2 }' $metadata)
 sample_name=$(awk 'NR==1 { print $3 }' $metadata | sed 's/\..*$//') #this will the prefix for all the new files made
+
+mv fastq1 $inputdir
+mv fastq2 $inputdir
+mv separate_by_orientation.py $scriptsdir
+mv distance_decay.py $scriptsdir
+cd $inputdir
 
 #bowtie2 will align the sample reads to the reference genome
 cmd1="bowtie2 --very-sensitive -p $pthread --reorder -x $file_path_to_genome -1 ${fastq1} -2 ${fastq2} -S ${sample_name}.sam 2> ${sample_name}.bowtie2.log"
@@ -146,7 +150,7 @@ echo "Beginning conversion of sam file to pairs file and cleaning up data"
 cmd2="pairtools sort --nproc 8 --tmpdir=./ -o ${sample_name}_sorted.pairs.gz ${sample_name}_parsed.pairs.gz"
 cmd3="pairtools dedup --mark-dups -o ${sample_name}_deduped.pairs.gz ${sample_name}_sorted.pairs.gz"
 cmd4="pairtools select '(pair_type == \"UU\")' -o ${sample_name}_filtered.pairs.gz ${sample_name}_deduped.pairs.gz"
-cmd5="pairtools split --output-pairs $outputdir/pairs_files/${sample_name}_output.pairs.gz" ${sample_name}_filtered.pairs.gz
+cmd5="pairtools split --output-pairs $outputdir/pairs_files/${sample_name}_output.pairs.gz ${sample_name}_filtered.pairs.gz"
 echo $cmd2
 time eval $cmd2
 echo $cmd3
