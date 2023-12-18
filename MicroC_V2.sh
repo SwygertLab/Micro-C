@@ -165,7 +165,7 @@ time eval $cmd5
 echo "Separating the one _output.pairs file into 4 different pairs files separated by orientation"
 cd $outputdir/pairs_files/
 gunzip ${sample_name}_output.pairs.gz
-cmd6="python $scriptsdir/separate_by_orientation.py $outputdir/pairs_files/${sample_name}_output.pairs"
+cmd6="python $scriptsdir/filter_orientation_heading.py $outputdir/pairs_files/${sample_name}_output.pairs"
 echo $cmd6
 time eval $cmd6
 
