@@ -108,3 +108,12 @@ sbatch MicroC_V2.sh metadata_file.txt
 To call this script assuming you made your own input, scripts, and output directory you can call this from your input directory containing your 2 fastq files and your metadata
 file and your scripts directory has MicroC_V2.sh, filter_orientation_heading.py, and distance_decay.py like this:
 sbatch ../02_scripts/MicroC_V2.sh metadata.txt
+
+## Versions of packages used at time of Writing this
+
+You can download the packages using these installation commands:
+conda install -c bioconda bowtie2
+conda install python=3.8
+conda install -c conda-forge matplotlib-base
+conda install -c bioconda cooltools
+conda install -c conda-forge -c bioconda pairtools=0.3.0
