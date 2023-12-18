@@ -1,0 +1,1 @@
+LogWT_01.fastq.gz LogWT_02.fastq.gz LogWT
