@@ -104,6 +104,7 @@ mapq_filter=5
 
 #Number of threads to use:
 pthread=$SLURM_NTASKS #Note - this imports the number of threads (ntasks) given in the command line
+
 ########## DONE MODIFYING ###############
 
 ########## BEGIN CODE ###############
@@ -111,9 +112,8 @@ echo -e ">>> INITIATING analyzer with command:\n\t$0 $@"
 
 samples=$(wc -l $metadata | awk '{ print $1 }')
 
-mkdir $inputdir
-mkdir $scriptsdir
-mkdir 03_results
+#mkdir $inputdir
+#mkdir $scriptsdir
 mkdir $outputdir
 mkdir $outputdir/pairs_files
 mkdir $outputdir/cool_files
@@ -124,11 +124,11 @@ fastq1=$(awk 'NR==1 { print $1 }' $metadata)
 fastq2=$(awk 'NR==1 { print $2 }' $metadata)
 sample_name=$(awk 'NR==1 { print $3 }' $metadata | sed 's/\..*$//') #this will the prefix for all the new files made
 
-mv fastq1 $inputdir
-mv fastq2 $inputdir
-mv separate_by_orientation.py $scriptsdir
-mv distance_decay.py $scriptsdir
-cd $inputdir
+#mv fastq1 $inputdir
+#mv fastq2 $inputdir
+#mv separate_by_orientation.py $scriptsdir
+#mv distance_decay.py $scriptsdir
+#cd $inputdir
 
 #bowtie2 will align the sample reads to the reference genome
 cmd1="bowtie2 --very-sensitive -p $pthread --reorder -x $file_path_to_genome -1 ${fastq1} -2 ${fastq2} -S ${sample_name}.sam 2> ${sample_name}.bowtie2.log"
@@ -165,7 +165,7 @@ time eval $cmd5
 echo "Separating the one _output.pairs file into 4 different pairs files separated by orientation"
 cd $outputdir/pairs_files/
 gunzip ${sample_name}_output.pairs.gz
-cmd6="python $scriptsdir/filter_orientation_heading.py $outputdir/pairs_files/${sample_name}_output.pairs"
+cmd6="python $scriptsdir/separate_by_orientation.py $outputdir/pairs_files/${sample_name}_output.pairs"
 echo $cmd6
 time eval $cmd6
 
