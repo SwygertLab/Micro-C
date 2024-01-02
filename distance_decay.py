@@ -10,7 +10,7 @@ distance_graphed = sys.argv[3]  # the distance you want to get graphed
 
 #in order to set graph limits change False to True and then add the 4 limit numbers
 set_limit = sys.argv[4]
-if set_limit is "True":
+if set_limit == "True":
     x_limit = [sys.argv[5], sys.argv[6]]  # example values [0, 1000]
     y_limit = [sys.argv[7], sys.argv[8]]  # example values [0, 0.025]
 
@@ -59,7 +59,7 @@ def create_distance_decay_plot(lis, type_of_lis, set_limit="False"):
         'y_axis': [lis[i][1] for i in range(1, int(distance_graphed)+1, 2)]
     })
     plt.plot('x_axis', 'y_axis', data=df, linestyle='-', marker='o', label=type_of_lis)
-    if set_limit is "True"
+    if set_limit == "True":
         plt.xlim(x_limit[0], x_limit[1])
         plt.ylim(y_limit[0], y_limit[1])
     plt.xlabel('base pair')
