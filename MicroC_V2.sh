@@ -91,16 +91,17 @@ file_path_to_chrom_sizes="/pl/active/swygertlab/jasonher/micro-c/sacCer3.chrSize
 
 file_path_to_juicer_jar="/pl/active/swygertlab/jasonher/juicer_jar/juicer_tools_1.22.01.jar"
 
-DATE=$(date +%Y-%m-%d)
+#DATE=$(date +%Y-%m-%d)
+DATE="map4"
 #OR
 #DATE='2022-12-03'
-inputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/01_input_data"
+inputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/4mapq_input"
 scriptsdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/02_scripts"
 outputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/03_results/"$DATE"_output"
 
 distance_graphed=201 #change to distance you want to get graphed
 
-mapq_filter=5
+mapq_filter=4
 
 #Number of threads to use:
 pthread=$SLURM_NTASKS #Note - this imports the number of threads (ntasks) given in the command line
@@ -112,18 +113,19 @@ echo -e ">>> INITIATING analyzer with command:\n\t$0 $@"
 
 samples=$(wc -l $metadata | awk '{ print $1 }')
 
-#mkdir $inputdir
-#mkdir $scriptsdir
+fastq1=$(awk 'NR==1 { print $1 }' $metadata)
+fastq2=$(awk 'NR==1 { print $2 }' $metadata)
+sample_name=$(awk 'NR==1 { print $3 }' $metadata | sed 's/\..*$//') #this will the prefix for all the new files made
+
 mkdir $outputdir
 mkdir $outputdir/pairs_files
 mkdir $outputdir/cool_files
 mkdir $outputdir/hic_files
 mkdir $outputdir/distance_decay_plots
 
-fastq1=$(awk 'NR==1 { print $1 }' $metadata)
-fastq2=$(awk 'NR==1 { print $2 }' $metadata)
-sample_name=$(awk 'NR==1 { print $3 }' $metadata | sed 's/\..*$//') #this will the prefix for all the new files made
-
+#these lines are only necessary if you did not make your own input and scripts directory
+#mkdir $inputdir
+#mkdir $scriptsdir
 #mv fastq1 $inputdir
 #mv fastq2 $inputdir
 #mv separate_by_orientation.py $scriptsdir
@@ -195,10 +197,10 @@ noIN_reads=$(echo ${noIN} | cut -d ' ' -f 1)
 sum=$((${in_reads}+${out_reads}+${same_reads}))
 #python distance_decay.py script generates short distance decay plots from 0 to 2000 bp
 cd $outputdir/distance_decay_plots/
-cmd11="python $scriptsdir/distance_decay.py $outputdir/pairs_files/${sample_name}_output_IN_reads.pairs ${in_reads} ${sum} $distance_graphed 'False'"
-cmd12="python $scriptsdir/distance_decay.py $outputdir/pairs_files/${sample_name}_output_OUT_reads.pairs ${out_reads} ${sum} $distance_graphed 'False'"
-cmd13="python $scriptsdir/distance_decay.py $outputdir/pairs_files/${sample_name}_output_SAME_reads.pairs ${same_reads} ${sum} $distance_graphed 'False'"
-cmd14="python $scriptsdir/distance_decay.py $outputdir/pairs_files/${sample_name}_output_noIN.pairs ${noIN_reads} ${sum} $distance_graphed 'False'"
+cmd11="python $scriptsdir/distance_decay.py $outputdir/pairs_files/${sample_name}_output_IN_reads.pairs ${in_reads} $distance_graphed 'False'"
+cmd12="python $scriptsdir/distance_decay.py $outputdir/pairs_files/${sample_name}_output_OUT_reads.pairs ${out_reads} $distance_graphed 'False'"
+cmd13="python $scriptsdir/distance_decay.py $outputdir/pairs_files/${sample_name}_output_SAME_reads.pairs ${same_reads} $distance_graphed 'False'"
+cmd14="python $scriptsdir/distance_decay.py $outputdir/pairs_files/${sample_name}_output_noIN.pairs ${noIN_reads} $distance_graphed 'False'"
 echo $cmd11
 time eval $cmd11
 echo $cmd12
@@ -208,13 +210,18 @@ time eval $cmd13
 echo $cmd14
 time eval $cmd14
 
+bgzip $outputdir/pairs_files/${sample_name}_output_IN_reads.pairs
+bgzip $outputdir/pairs_files/${sample_name}_output_OUT_reads.pairs
+bgzip $outputdir/pairs_files/${sample_name}_output_SAME_reads.pairs
+bgzip $outputdir/pairs_files/${sample_name}_output_noIN.pairs
+
 #creating cooler files
 echo "Creating and balancing cooler files"
 cd $outputdir/pairs_files/
-cmd15="pairix -f ${sample_name}_output_IN_reads.pairs"
-cmd16="pairix -f ${sample_name}_output_OUT_reads.pairs"
-cmd17="pairix -f ${sample_name}_output_SAME_reads.pairs"
-cmd18="pairix -f ${sample_name}_output_noIN.pairs"
+cmd15="pairix -f ${sample_name}_output_IN_reads.pairs.gz"
+cmd16="pairix -f ${sample_name}_output_OUT_reads.pairs.gz"
+cmd17="pairix -f ${sample_name}_output_SAME_reads.pairs.gz"
+cmd18="pairix -f ${sample_name}_output_noIN.pairs.gz"
 cmd19="cooler cload pairix $file_path_to_chrom_sizes:150 ${sample_name}_output_IN_reads.pairs.gz $outputdir/cool_files/${sample_name}_output_IN_reads.cool"
 cmd20="cooler cload pairix $file_path_to_chrom_sizes:150 ${sample_name}_output_OUT_reads.pairs.gz $outputdir/cool_files/${sample_name}_output_OUT_reads.cool"
 cmd21="cooler cload pairix $file_path_to_chrom_sizes:150 ${sample_name}_output_SAME_reads.pairs.gz $outputdir/cool_files/${sample_name}_output_SAME_reads.cool"
