@@ -5,7 +5,8 @@ import pandas as pd
 
 pairs_file = sys.argv[1]
 reads_in_pairs_file = float(sys.argv[2])  # the script needs to know the total amount of reads in the respective orientation
-distance_graphed = sys.argv[3]  # the distance you want to get graphed
+graph_x_limit = sys.argv[3]  # the distance you want to get graphed
+print(graph_x_limit)
 # note that python stops 1 before the number so if you want to stop at 200 the input needs to be 201
 
 #in order to set graph limits change False to True and then add the 4 limit numbers
@@ -54,9 +55,11 @@ def create_distance_decay_plot_list(file_to_read):
 def create_distance_decay_plot(lis, type_of_lis, set_limit="False"):
     plot_name = pairs_file_name + type_of_lis + '.png'
     plot_name2 = pairs_file_name + type_of_lis + '.svg'
+    print(graph_x_limit) #FIXME
+    print(reads_in_pairs_file)
     df = pd.DataFrame({
-        'x_axis': [lis[i][0] for i in range(0, int(distance_graphed), 2)],
-        'y_axis': [lis[i][1] for i in range(1, int(distance_graphed)+1, 2)]
+        'x_axis': [lis[i][0] for i in range(0, int(graph_x_limit), 2)],
+        'y_axis': [lis[i][1] for i in range(1, int(graph_x_limit)+1, 2)]
     })
     plt.plot('x_axis', 'y_axis', data=df, linestyle='-', marker='o', label=type_of_lis)
     if set_limit == "True":
@@ -67,7 +70,6 @@ def create_distance_decay_plot(lis, type_of_lis, set_limit="False"):
     plt.title(pairs_file_name + 'distance decay plot')
     plt.legend(fontsize='10')
     plt.savefig(plot_name)
-    plt.plot_name(plot_name2)
     plt.close()
 
 
