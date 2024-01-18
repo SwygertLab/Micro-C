@@ -91,17 +91,17 @@ file_path_to_chrom_sizes="/pl/active/swygertlab/jasonher/micro-c/sacCer3.chrSize
 
 file_path_to_juicer_jar="/pl/active/swygertlab/jasonher/juicer_jar/juicer_tools_1.22.01.jar"
 
-#DATE=$(date +%Y-%m-%d)
-DATE="map4"
+DATE=$(date +%Y-%m-%d)
 #OR
 #DATE='2022-12-03'
-inputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/4mapq_input"
+inputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/01_input"
 scriptsdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/02_scripts"
 outputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/03_results/"$DATE"_output"
+#note that these do not have the foward slash "/" on purpose
 
-distance_graphed=201 #change to distance you want to get graphed
+distance_graphed=201 #change to distance you want to get graphed by distance_decay.py
 
-mapq_filter=4
+mapq_filter=2 #the filter by which you don't want reads to be included if they are lower quality, higher mapq, than
 
 #Number of threads to use:
 pthread=$SLURM_NTASKS #Note - this imports the number of threads (ntasks) given in the command line
