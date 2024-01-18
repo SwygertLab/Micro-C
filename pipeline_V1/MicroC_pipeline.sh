@@ -53,7 +53,7 @@ pairtools split --output-pairs ${sample_name}_output.pairs.gz ${sample_name}_fil
 #in order to access files in python script unzipping them
 #the filter_orientation_heading.py python script will generate IN, OUT, SAME, and NoFilter .pairs files the python scripts must be in working directory with command as written
 gunzip ${sample_name}_output.pairs.gz
-python filter_orientations_heading.py ${sample_name}_output.pairs
+python separate_by_orientation.py ${sample_name}_output.pairs
 
 java -Xmx22g -jar $file_path_to_juicer_jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_IN_reads.pairs ./results/${sample_name}'_IN_reads.hic' sacCer3
 java -Xmx22g -jar $file_path_to_juicer_jar -r 10,50,100,150,200,500,1000,3200,5000 pre ${sample_name}_output_OUT_reads.pairs ./results/${sample_name}'_OUT_reads.hic' sacCer3
