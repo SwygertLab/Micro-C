@@ -96,7 +96,7 @@ DATE=$(date +%Y-%m-%d)
 #DATE='2022-12-03'
 inputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/01_input"
 scriptsdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/02_scripts"
-outputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/03_results/"$DATE"_output"
+outputdir="/pl/active/swygertlab/jasonher/Micro-C/SCeres_logWT/03_results"
 #note that these do not have the foward slash "/" on purpose
 
 distance_graphed=201 #change to distance you want to get graphed by distance_decay.py
@@ -117,7 +117,7 @@ fastq1=$(awk 'NR==1 { print $1 }' $metadata)
 fastq2=$(awk 'NR==1 { print $2 }' $metadata)
 sample_name=$(awk 'NR==1 { print $3 }' $metadata | sed 's/\..*$//') #this will the prefix for all the new files made
 
-mkdir $outputdir
+mkdir $outputdir/$DATE"_output"
 mkdir $outputdir/pairs_files
 mkdir $outputdir/cool_files
 mkdir $outputdir/hic_files
