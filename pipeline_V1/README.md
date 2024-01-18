@@ -30,9 +30,9 @@ without using a mapq score filter and then testing a lot of different mapq score
 much real data as possible.
 
 The MicC_pipeline.sh pipeline also contains some python scripts that need to be pointed to on line 56 and lines 73-76. You can do so like this:
-python /path/to/python/script/filter_orientations_heading.py ${sample_name}_output.pairs
+python /path/to/python/script/separate_by_orientation.py ${sample_name}_output.pairs
 These are part of this repository and are:
-- filter_orientation_heading.py
+- separate_by_orientation.py
 - distance_decay.py
 
 distance_decay.py is called inside the pipeline and will output a graph containing the average short contacts of the different orientations.
