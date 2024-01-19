@@ -60,3 +60,15 @@ overlap_distance_decay.py
 This script is intended to take two separate datasets of micro-c data in a .pairs file and simply creates an overlapping graph of them.
 
 Can be used like this: python overlap_distance_decay.py sample1.pairs sample2.pairs
+
+You can download the packages using these installation commands:
+
+conda install -c bioconda bowtie2
+
+conda install python=3.8
+
+conda install -c conda-forge matplotlib-base
+
+conda install -c bioconda cooltools
+
+conda install -c conda-forge -c bioconda pairtools=0.3.0 python=3.8
