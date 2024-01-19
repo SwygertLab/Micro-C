@@ -9,7 +9,7 @@ A couple packages are needed to run this code all of which are downloadable from
 - numpy
 - matplotlib
 
-The variables input_dir, scripts_dir, and output_dir need to contain absolute paths as to where you want certain files to be outputted. 
+While looking at the MicroC_V2.sh and the "Modify this section" portion there are some lines the user should change. The variables input_dir, scripts_dir, and output_dir need to contain absolute paths as to where you want certain files to be outputted. 
 
 The input_dir is not essential and I mainly use it as a working directory where I call the scripts from, but the input_dir variable is helpful when I run a script to delete all the non-essentail intermediate files. It typically holds my metadata file and the 2 pair-end Micro-C data files. The scripts_dir variable usually points to a directory that holds MicroC_V2.sh, separate_by_orientation.py, and distance_decay.py. The output_dir variable directory does not assume there are any files at that location just that it exists, and will create another output directory inside the specified directory. I chose to do it this way as I often run the same dataset under different conditions and I can change the new output variable name to those conditions or just keep it as the new date and write notes in the respective locations specifying what the different conditions were. 
 
