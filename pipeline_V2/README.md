@@ -64,4 +64,4 @@ conda install -c conda-forge matplotlib-base
 
 conda install -c bioconda cooltools
 
-conda install -c conda-forge -c bioconda pairtools=0.3.0
+conda install -c conda-forge -c bioconda pairtools=0.3.0 python=3.8
