@@ -209,6 +209,10 @@ echo $cmd13
 time eval $cmd13
 echo $cmd14
 time eval $cmd14
+mv $outputdir/pairs_file/${sample_name}_output_IN_readsori_decay.png $outputdir/distance_decay_plots
+mv $outputdir/pairs_file/${sample_name}_output_OUT_readsori_decay.png $outputdir/distance_decay_plots
+mv $outputdir/pairs_file/${sample_name}_output_SAME_readsori_decay.png $outputdir/distance_decay_plots
+mv $outputdir/pairs_file/${sample_name}_output_noINori_decay.png $outputdir/distance_decay_plots
 
 bgzip $outputdir/pairs_files/${sample_name}_output_IN_reads.pairs
 bgzip $outputdir/pairs_files/${sample_name}_output_OUT_reads.pairs
