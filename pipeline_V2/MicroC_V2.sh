@@ -103,9 +103,6 @@ distance_graphed=201 #change to distance you want to get graphed by distance_dec
 
 mapq_filter=2 #the filter by which you don't want reads to be included if they are lower quality, higher mapq, than
 
-#Number of threads to use:
-pthread=$SLURM_NTASKS #Note - this imports the number of threads (ntasks) given in the command line
-
 ########## DONE MODIFYING ###############
 
 ########## BEGIN CODE ###############
