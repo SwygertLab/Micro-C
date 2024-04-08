@@ -2,6 +2,8 @@
 MicroC_V2.sh does the same tasks as the first version, but it has more organization of files overall. It also, contains better log files containing 
 information like the time it took each command to run. 
 
+Ideally you will have a conda environment specific to Micro-C experiments. Also at the bottom of the page I've included more specific versions used at the time of writing this script.
+
 A couple packages are needed to run this code all of which are downloadable from https://anaconda.org/anaconda/conda including:
 - python version 3.8+
 - cooltools
