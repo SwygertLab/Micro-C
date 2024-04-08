@@ -4,6 +4,8 @@ information like the time it took each command to run.
 
 Ideally you will have a conda environment specific to Micro-C experiments. Also at the bottom of the page I've included more specific versions used at the time of writing this script.
 
+In order to create a conda environment, you will need an active version of anaconda and type in conda create --name (your_conda_env_name).
+
 A couple packages are needed to run this code all of which are downloadable from https://anaconda.org/anaconda/conda including:
 - python version 3.8+
 - cooltools
