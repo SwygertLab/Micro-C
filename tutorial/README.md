@@ -74,7 +74,7 @@ sbatch /path/to/MicroC_V2.sh /path/to/metadatafile.txt
 
 The script is constructed in such a way that if it fails, the error message will include where in the pipeline it failed to hopefully help you figure out what is wrong. One of the version commands also makes it harder for the computer to recognize the file type as it thinks there is non-text in there, but there isn't anything that makes it unopenable, so you can skip the warning message or # out the version output command at the bottom of the script. 
 
-The results should look like the following:
+The results should look like the following for the sample data provided:
 
 Micro-C heatmaps opened through juicebox-
 
