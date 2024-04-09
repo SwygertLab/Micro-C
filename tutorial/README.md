@@ -41,7 +41,7 @@ There is no required schema for where or how your files are located as the scrip
 Although there is one required schema being that distance_decay.py and separate_by_orientation.py, wherever they are, are located in the same directory. 
 I will go through edits need to be made to the script after finishing download details.
 
-In /test_data/ there is a pair end set of Micro-C data. This is Log Phase W303 S. cerevisiae from Molecular Cell paper, Swygert et al, 2019 and truncated to only the first 1,000,000 lines of some our sample data as the whole thing is too large to upload.
+In /test_data/ there is a pair end set of Micro-C data. This is Log Phase W303 S. cerevisiae from Molecular Cell paper, Swygert et al, 2019 and truncated to only the first 500,000 lines of some our sample data as the whole thing is too large to upload.
 Download this test data into a directory as you would like.
 
 ##Script Details
