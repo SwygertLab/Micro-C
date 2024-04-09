@@ -62,6 +62,7 @@ I typically create an experiment directory and in there create an input director
 
 Part of the output of this pipeline are distance decay plots, if you know to what distance you would like the graphs to be made to then you can change the distance_graphed variable to that distance just note that the data is binned into 10 base pair bins so you divide the distance desired by 10 and that python does not include the number you set it to so you need to add 1 to where you want to go. 
 -The distancy_decay.py script can also handle setting the axis of the graphs so you may place all the sample you would like on the same scale, but that will be covered in the readme.md of pipeline_V2
+There is another script in overlap_dist_decay.py that will place samples on the same graph. How to use is also explained in pipeline_V2 folder's readme.md.
 
 Also the mapq_filter variable can be changed as you like, it is a bit arbitrary; however, mine is set to 2 as I found that to be the minimum required filtering score to remove artifact from transposon regions of the sample and maintain the most amount of data. If you would like to find out more about how mapq filtering works you can do so here: https://samtools.github.io/hts-specs/SAMv1.pdf
 
